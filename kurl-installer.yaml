@@ -1,0 +1,49 @@
+apiVersion: "cluster.kurl.sh/v1beta1"
+kind: "Installer"
+metadata: 
+  name: gitops-cluster
+spec: 
+  kubernetes: 
+    version: "1.24.x"
+  antrea: 
+    version: "latest"
+  contour: 
+    version: "latest"
+  prometheus: 
+    version: "0.58.x"
+  containerd: 
+    version: "1.5.x"
+  ekco: 
+    version: "latest"
+  velero: 
+    version: "latest"
+  longhorn: 
+    version: "1.3.x"
+  helm:
+    helmfileSpec: |
+      repositories:
+      - name: jetstack
+        url: https://charts.jetstack.io 
+      - name: argo-cd 
+        url: https://argoproj.github.io/argo-helm
+      - name: bitnami 
+        url: https://charts.bitnami.com/bitnami
+      releases:
+      - name: one-fab-mug
+        chart: jetstack/cert-manager
+        namespace: cert-manager
+        values:
+        - installCRDs: true
+        - ingressShim:
+            defaultIssuerName: letsencrypt-cluster-issuer
+            defaultIssuerKind: ClusterIssuer 
+            defaultIssuerGroup: cert-manager.io
+      - name: destined-seagull
+        chart: argo-cd/argo-cd
+        namespace: argocd
+        values:
+        - extraArgs:
+          - "--insecure"
+      - name: integral-sheepdog
+        chart: bitnami/sealed-secrets
+        namespace: kubeseal
