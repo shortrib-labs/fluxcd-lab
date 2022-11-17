@@ -77,8 +77,3 @@ cluster-issuer:
 				--from-literal=api-key=$(shell yq .cloudflare.api-key $(params_yaml)) \
 				-n cert-manager -o yaml --dry-run=client | kubectl apply -f-
 		@kubectl apply -f work/lets-encrypt-cluster-issuer.yaml
-	
-.PHONY: argocd-ingress
-argocd-ingress:
-		@kubectl apply -f work/argocd-ingress.yaml
-	
