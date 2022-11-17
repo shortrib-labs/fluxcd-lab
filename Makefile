@@ -73,7 +73,15 @@ decrypt:
 
 .PHONY: cluster-issuer
 cluster-issuer:
-		@kubectl create secret generic cloudflare-api-key \
-				--from-literal=api-key=$(shell yq .cloudflare.api-key $(params_yaml)) \
-				-n cert-manager -o yaml --dry-run=client | kubectl apply -f-
-		@kubectl apply -f work/lets-encrypt-cluster-issuer.yaml
+	@kubectl create secret generic cloudflare-api-key \
+		--from-literal=api-key=$(shell yq .cloudflare.api-key $(params_yaml)) \
+		-n cert-manager -o yaml --dry-run=client | kubectl apply -f-
+	@kubectl apply -f work/lets-encrypt-cluster-issuer.yaml
+
+.PHONY: bootstrap
+bootstrap: node
+	@flux bootstrap github \
+		--owner $(shell yq .git.owner $(params_yaml)) \
+		--repository $(shell yq .git.repository $(params_yaml)) \
+		--path $(shell yq .git.path $(params_yaml))/$(hostname) \
+		--gpg-key-id $(shell yq .git.gpg-key $(params_yaml))
