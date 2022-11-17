@@ -1,5 +1,5 @@
 secrets/*
-!secrets/*.enc
+!secrets/params.yaml
 !secrets/README.md
 work/*
 !work/.gitkeep
