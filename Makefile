@@ -6,7 +6,7 @@ params_yaml := $(SECRETS_DIR)/params.yaml
 
 hostname		?= $(shell yq .hostname $(params_yaml))
 kurl_yaml		:= $$(yq '.spec.kubernetes.clusterName="$(hostname)"' kurl-installer.yaml)
-kurl_script ?= curl $(shell curl --verbose -H 'Content-Type: text/yaml' --data-raw "$(kurl_yaml)" 'https://kurl.sh/installer' && echo "") | sudo bash 
+kurl_script ?= curl $(shell curl --silent -H 'Content-Type: text/yaml' --data-raw "$(kurl_yaml)" 'https://kurl.sh/installer' && echo "") | sudo bash 
 
 define TFVARS
 hostname				 = "$(hostname)"
