@@ -1,49 +1,28 @@
 apiVersion: "cluster.kurl.sh/v1beta1"
 kind: "Installer"
 metadata: 
-  name: gitops-cluster
+  name: "9b3c5e5"
 spec: 
   kubernetes: 
-    version: "1.24.x"
-  antrea: 
-    version: "latest"
+    version: "1.25.x"
+  flannel: 
+    version: "0.20.x"
   contour: 
-    version: "latest"
+    version: "1.23.x"
   prometheus: 
-    version: "0.58.x"
+    version: "0.60.x"
+  registry: 
+    version: "2.8.x"
   containerd: 
-    version: "1.5.x"
+    version: "1.6.x"
   ekco: 
     version: "latest"
-  velero: 
-    version: "latest"
-  longhorn: 
-    version: "1.3.x"
-  helm:
-    helmfileSpec: |
-      repositories:
-      - name: jetstack
-        url: https://charts.jetstack.io 
-      - name: argo-cd 
-        url: https://argoproj.github.io/argo-helm
-      - name: bitnami 
-        url: https://charts.bitnami.com/bitnami
-      releases:
-      - name: one-fab-mug
-        chart: jetstack/cert-manager
-        namespace: cert-manager
-        values:
-        - installCRDs: true
-        - ingressShim:
-            defaultIssuerName: letsencrypt-cluster-issuer
-            defaultIssuerKind: ClusterIssuer 
-            defaultIssuerGroup: cert-manager.io
-      - name: destined-seagull
-        chart: argo-cd/argo-cd
-        namespace: argocd
-        values:
-        - extraArgs:
-          - "--insecure"
-      - name: integral-sheepdog
-        chart: bitnami/sealed-secrets
-        namespace: kubeseal
+  minio: 
+    version: "2022-10-20T00-55-09Z"
+  openebs: 
+    version: "3.3.x"
+    isLocalPVEnabled: true
+    localPVStorageClassName: "default"
+  certManager: 
+    version: "1.9.x"
+

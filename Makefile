@@ -23,7 +23,7 @@ disk_size = "$(shell yq .node.disk_size $(params_yaml))"
 
 vsphere_server	 = "$(shell yq .vsphere.server $(params_yaml))"
 vsphere_username = "$(shell yq .vsphere.username $(params_yaml))"
-vsphere_password = "$(shell yq .vsphere.password $(params_yaml))"
+vsphere_password = "$(shell sops --decrypt --extract '["vsphere"]["password"]' $(params_yaml))"
 
 vsphere_datacenter		= "$(shell yq .vsphere.datacenter $(params_yaml))"
 vsphere_cluster				= "$(shell yq .vsphere.cluster $(params_yaml))"
@@ -65,11 +65,11 @@ clean:
 
 .PHONY: encrypt
 encrypt: 
-	@secrets encrypt $(shell basename $(params_yaml))
+	@sops --encrypt --in-place $(params_yaml)
 
 .PHONY: decrypt
 decrypt: 
-	@secrets decrypt $(shell basename $(params_yaml))
+	@sops --decrypt --in-place $(params_yaml)
 
 .PHONY: cluster-issuer
 cluster-issuer:
