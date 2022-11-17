@@ -1,7 +1,7 @@
 apiVersion: "cluster.kurl.sh/v1beta1"
 kind: "Installer"
 metadata: 
-  name: "9b3c5e5"
+  name: fluxcd-gitops-cluster
 spec: 
   kubernetes: 
     version: "1.25.x"
